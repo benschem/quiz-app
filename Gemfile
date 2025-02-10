@@ -71,6 +71,10 @@ group :development, :test do
   # FactoryBot for test data instead of fixtures
   gem "factory_bot_rails"
 
+  # Shoulda Matchers provides RSpec one-liners to test common Rails functionality
+  # that, if written by hand, would be much longer, more complex, and error-prone.
+  gem 'shoulda-matchers', '~> 6.0'
+
   # Generates fake data for testing
   gem "faker"
 
