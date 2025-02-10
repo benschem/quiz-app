@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :quiz do
-    title { "sample quiz" }
+    title { "quiz" }
   end
 end

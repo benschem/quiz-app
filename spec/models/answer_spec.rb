@@ -5,11 +5,11 @@ RSpec.describe Answer, type: :model do
   it { should have_many(:user_answers).dependent(:destroy) }
 
   it "is invalid without text" do
-    answer = build_stubbed(:answer, text: nil)
+    answer = build_stubbed(:correct_answer, text: nil)
     expect(answer).not_to be_valid
   end
 
-  it "is invalid unless it specifies whether it's correct" do
+  it "is invalid unless it specifies whether it's the correct answer" do
     answer = build_stubbed(:answer, correct: nil)
     expect(answer).not_to be_valid
   end
