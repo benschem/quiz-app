@@ -3,21 +3,25 @@ require 'rails_helper'
 RSpec.describe UserAnswer, type: :model do
   it { should belong_to(:answer) }
 
-  let(:quiz) { build_stubbed(:quiz) }
-  let(:question) { build_stubbed(:question, quiz: quiz) }
-  let(:answer1) { build_stubbed(:answer, question: question) }
-  let(:answer2) { build_stubbed(:answer, question: question) }
+  # reminder: can't stub here, they need to be in the db
+  let(:quiz) { create(:quiz) }
+  let(:question) { create(:question, quiz: quiz) }
+  let(:answer) { create(:answer, question: question) }
   let(:session_id) { "12345" }
 
   it "is invalid without a session_id" do
-    user_answer = build_stubbed(:user_answer, session_id: nil, answer: answer1)
+    user_answer = build(:user_answer, session_id: nil, answer: answer)
     expect(user_answer).not_to be_valid
   end
 
   it "prevents duplicate votes for the same question per session" do
-    create(:user_answer, session_id: session_id, answer: answer1)
+    # use create here because we need to persist a UserAnswer
+    create(:user_answer, session_id: session_id, answer: answer)
 
-    duplicate_vote = build(:user_answer, session_id: session_id, answer: answer2)
-    expect(duplicate_vote).not_to be_valid
+
+    # use create inside the block here because I couldn't figure out the exact error
+    expect {
+      create(:user_answer, session_id: session_id, answer: answer)
+    }.to raise_error(ActiveRecord::StatementInvalid, /duplicate key value violates unique constraint/)
   end
 end
