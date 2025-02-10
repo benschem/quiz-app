@@ -27,7 +27,7 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
+# gem "jbuilder"
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -61,5 +61,19 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
 end
 
+group :development, :test do
+  # RSpec testing framework for Rails
+  gem "rspec-rails"
+
+  # FactoryBot for test data instead of fixtures
+  gem "factory_bot_rails"
+
+  # Generates fake data for testing
+  gem "faker"
+
+  # Integration testing with browser simulation
+  gem "capybara"
+end
