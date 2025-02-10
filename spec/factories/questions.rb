@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :question do
-    quiz { nil }
-    text { "MyString" }
+    association :quiz
+    text { "sample question" }
   end
 end

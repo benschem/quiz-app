@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :answer do
-    question { nil }
-    text { "MyString" }
+    association :question
+    text { "sample answer" }
     correct { false }
-    times_guessed { 1 }
+    times_guessed { 0 }
   end
 end

@@ -32,6 +32,9 @@ require 'rspec/rails'
 # Setup for Factory Bot
 require_relative '../spec/support/factory_bot'
 
+# Setup for Shoulda Matchers
+require_relative '../spec/support/shoulda_matchers'
+
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
