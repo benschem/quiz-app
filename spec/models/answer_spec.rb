@@ -5,12 +5,17 @@ RSpec.describe Answer, type: :model do
   it { should have_many(:user_answers).dependent(:destroy) }
 
   it "is invalid without text" do
-    answer = Answer.new(text: nil, question: Question.new(text: "Test?", quiz: Quiz.new(title: "Test Quiz")))
+    answer = build_stubbed(:answer, text: nil)
+    expect(answer).not_to be_valid
+  end
+
+  it "is invalid unless it specifies whether it's correct" do
+    answer = build_stubbed(:answer, correct: nil)
     expect(answer).not_to be_valid
   end
 
   it "defaults times_guessed to 0" do
-    answer = Answer.create!(text: "Test", question: Question.new(text: "Test?", quiz: Quiz.new(title: "Test Quiz")))
+    answer = build_stubbed(:answer)
     expect(answer.times_guessed).to eq(0)
   end
 end
