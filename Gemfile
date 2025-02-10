@@ -76,4 +76,10 @@ group :development, :test do
 
   # Integration testing with browser simulation
   gem "capybara"
+
+  # .rbenv/versions/3.3.5/lib/ruby/3.3.0/json/generic_object.rb:2:
+  # warning: /Users/Ben/.rbenv/versions/3.3.5/lib/ruby/3.3.0/ostruct.rb
+  # was loaded from the standard library, but will no longer be part of the default gems starting from Ruby 3.5.0.
+  # You can add ostruct to your Gemfile or gemspec to silence this warning.
+  gem "ostruct"
 end
