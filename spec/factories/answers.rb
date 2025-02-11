@@ -1,8 +1,9 @@
 FactoryBot.define do
   factory :answer do
     association :question
-    text { "incorrect answer" }
+    text { "answer" }
     times_guessed { 0 }
+    correct { false }
 
     trait :correct do
       text { "correct answer" }
