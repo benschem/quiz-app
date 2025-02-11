@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user_answer do
+  factory :guess do
     session_id { SecureRandom.uuid }
     association :answer
   end
