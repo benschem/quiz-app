@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
   it { should belong_to(:question) }
-  it { should have_many(:user_answers).dependent(:destroy) }
+  it { should have_many(:guesses).dependent(:destroy) }
 
   it "is invalid without text" do
     answer = build_stubbed(:correct_answer, text: nil)
