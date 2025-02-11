@@ -38,5 +38,4 @@ RSpec.describe Answer, type: :model do
     answer = build_stubbed(:correct_answer)
     expect(answer.incorrect?).to eq(false)
   end
-
 end
