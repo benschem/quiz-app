@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_11_014146) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_11_043240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_014146) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
+  create_table "guesses", force: :cascade do |t|
+    t.string "session_id"
+    t.bigint "answer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_guesses_on_answer_id"
+    t.index ["session_id", "answer_id"], name: "index_guesses_on_session_and_answer", unique: true
   end
 
   create_table "questions", force: :cascade do |t|
@@ -39,15 +48,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_014146) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_answers", force: :cascade do |t|
-    t.string "session_id"
-    t.bigint "answer_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["answer_id"], name: "index_user_answers_on_answer_id"
-    t.index ["session_id", "answer_id"], name: "index_user_answers_on_session_and_answer", unique: true
-  end
-
   create_table "user_progresses", force: :cascade do |t|
     t.bigint "quiz_id", null: false
     t.bigint "question_id", null: false
@@ -60,8 +60,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_014146) do
   end
 
   add_foreign_key "answers", "questions"
+  add_foreign_key "guesses", "answers"
   add_foreign_key "questions", "quizzes"
-  add_foreign_key "user_answers", "answers"
   add_foreign_key "user_progresses", "questions"
   add_foreign_key "user_progresses", "quizzes"
 end
