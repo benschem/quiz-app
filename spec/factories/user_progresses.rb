@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user_progress do
     quiz { nil }
-    question { nil }
+    current_question { nil }
     completed { false }
     session_id { SecureRandom.uuid }
 

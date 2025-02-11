@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_11_043240) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_11_054037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -50,18 +50,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_043240) do
 
   create_table "user_progresses", force: :cascade do |t|
     t.bigint "quiz_id", null: false
-    t.bigint "question_id", null: false
+    t.bigint "current_question_id", null: false
     t.boolean "completed", default: false
     t.string "session_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["question_id"], name: "index_user_progresses_on_question_id"
+    t.index ["current_question_id"], name: "index_user_progresses_on_current_question_id"
     t.index ["quiz_id"], name: "index_user_progresses_on_quiz_id"
   end
 
   add_foreign_key "answers", "questions"
   add_foreign_key "guesses", "answers"
   add_foreign_key "questions", "quizzes"
-  add_foreign_key "user_progresses", "questions"
+  add_foreign_key "user_progresses", "questions", column: "current_question_id"
   add_foreign_key "user_progresses", "quizzes"
 end
