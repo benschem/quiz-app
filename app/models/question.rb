@@ -1,8 +1,10 @@
 class Question < ApplicationRecord
   belongs_to :quiz
   has_many :answers, dependent: :destroy
+  has_many :guesses, through: :answers, dependent: :destroy
 
   validates :text, presence: true
+  validates :number, presence: true
   validate :must_have_exactly_one_correct_answer, on: :update # allows creating an answer after a question
 
   private

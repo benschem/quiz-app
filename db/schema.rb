@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_11_054037) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_11_013533) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,20 +25,20 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_054037) do
   end
 
   create_table "guesses", force: :cascade do |t|
-    t.string "session_id"
+    t.bigint "user_id", null: false
     t.bigint "answer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["answer_id"], name: "index_guesses_on_answer_id"
-    t.index ["session_id", "answer_id"], name: "index_guesses_on_session_and_answer", unique: true
+    t.index ["user_id"], name: "index_guesses_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|
     t.bigint "quiz_id", null: false
     t.string "text"
+    t.integer "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "order"
     t.index ["quiz_id"], name: "index_questions_on_quiz_id"
   end
 
@@ -48,20 +48,25 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_054037) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_progresses", force: :cascade do |t|
+  create_table "user_quiz", force: :cascade do |t|
+    t.bigint "user_id", null: false
     t.bigint "quiz_id", null: false
-    t.bigint "current_question_id", null: false
-    t.boolean "completed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_user_quiz_on_quiz_id"
+    t.index ["user_id"], name: "index_user_quiz_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string "session_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["current_question_id"], name: "index_user_progresses_on_current_question_id"
-    t.index ["quiz_id"], name: "index_user_progresses_on_quiz_id"
   end
 
   add_foreign_key "answers", "questions"
   add_foreign_key "guesses", "answers"
+  add_foreign_key "guesses", "users"
   add_foreign_key "questions", "quizzes"
-  add_foreign_key "user_progresses", "questions", column: "current_question_id"
-  add_foreign_key "user_progresses", "quizzes"
+  add_foreign_key "user_quiz", "quizzes"
+  add_foreign_key "user_quiz", "users"
 end

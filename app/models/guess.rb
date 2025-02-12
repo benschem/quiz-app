@@ -1,5 +1,10 @@
 class Guess < ApplicationRecord
+  belongs_to :user
   belongs_to :answer
-  validates :answer, presence: true
-  validates :session_id, presence: true
+
+  validates :user_id, uniqueness: { scope: :answer_id, message: "You can only guess an answer once" }
+
+  def correct?
+    answer.correct?
+  end
 end

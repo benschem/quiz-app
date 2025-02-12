@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :question do
     association :quiz
     text { "question?" }
+    number { 1 }
 
     trait :with_answers do
       after(:create) do |question|
