@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_013533) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["answer_id"], name: "index_guesses_on_answer_id"
+    t.index ["user_id", "answer_id"], name: "index_guesses_on_user_and_answer", unique: true
     t.index ["user_id"], name: "index_guesses_on_user_id"
   end
 
@@ -48,13 +49,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_013533) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_quiz", force: :cascade do |t|
+  create_table "user_quizzes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "quiz_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["quiz_id"], name: "index_user_quiz_on_quiz_id"
-    t.index ["user_id"], name: "index_user_quiz_on_user_id"
+    t.index ["quiz_id"], name: "index_user_quizzes_on_quiz_id"
+    t.index ["user_id"], name: "index_user_quizzes_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -67,6 +68,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_11_013533) do
   add_foreign_key "guesses", "answers"
   add_foreign_key "guesses", "users"
   add_foreign_key "questions", "quizzes"
-  add_foreign_key "user_quiz", "quizzes"
-  add_foreign_key "user_quiz", "users"
+  add_foreign_key "user_quizzes", "quizzes"
+  add_foreign_key "user_quizzes", "users"
 end
