@@ -1,21 +1,27 @@
 class QuizzesController < ApplicationController
+  before_action :set_quiz, only: :show
+  before_action :find_or_create_user_quiz, only: :show
+
+  # GET /quizzes
   def index
     @quizzes = Quiz.all
   end
 
   # GET /quizzes/:id
-  # Show an indivual quiz overview
-  # Start quiz button unless quiz already completed
-  # If completed, show stats and give redo option
   def show
-    @quiz = Quiz.find(params[:id])
+    @user_quiz.update(times_taken: times_taken += 1) if @quiz.completed_by?(current_user)
+  end
 
-    UserQuiz.find_or_create_by(
+  private
+
+  def set_quiz
+    @quiz = Quiz.find(params[:id])
+  end
+
+  def find_or_create_user_quiz
+    @user_quiz = UserQuiz.find_or_create_by(
       user: current_user,
       quiz: @quiz
     )
-
-    # use this in the view
-    # if @quiz.completed_by?(current_user)
   end
 end
