@@ -16,10 +16,10 @@ class Quiz < ApplicationRecord
   end
 
   def next_question_for(user)
-    return nil if finished_by?(user)
-
     answered_question_ids = user.guesses.includes(:answer).pluck("answers.question_id")
     unanswered_questions = questions.where.not(id: answered_question_ids)
+    return nil if unanswered_questions.none?
+
     unanswered_questions.ordered.first
   end
 end

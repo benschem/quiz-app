@@ -3,6 +3,8 @@
 <% if @quiz.finished_by?(current_user) %>
 
   <p>You've already taken this quiz!</p>
+  <p>Your high score is <%= @user_quiz.high_score %>/<%= @quiz.questions.count %></p>
+  <%= link_to "Take this quiz again", quizzes_path %>
   <%= link_to "Back to quizzes", quizzes_path %>
 
 <% elsif @quiz.started_by?(current_user) && !@quiz.finished_by?(current_user) %>
