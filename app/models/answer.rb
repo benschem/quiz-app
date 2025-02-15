@@ -5,7 +5,7 @@ class Answer < ApplicationRecord
   validates :text, presence: true
   validates :correct, inclusion: { in: [true, false] }
 
-  # Rails provdes this automatically
+  # Rails provdes this automatically for boolean columns
   # def correct?
   #   correct
   # end
@@ -14,28 +14,49 @@ class Answer < ApplicationRecord
     !correct && !correct.nil?
   end
 
+  def guessed_by?(user)
+    guesses.exists?(user: user)
+  end
+
   def increment_times_guessed
-    # We still need this because the guesses table are based on sessions, not real users
-    # Meaning we'lll probably clena out the user table regularly
+    # We still need a times_guessed column because our users table is based on sessions, not real users,
+    # meaning we'll probably clean out old "users" regularly, so we can't rely on a calculation for this
+
     # This method might be called a lot!
+    # So we need to make sure it's efficient
+    # There are a few different approaches:
 
-    # Slowest option:
-    # .save updates all fields
-    # .save triggers validations and callbacks for the whole model
-
+    # Slowest & not atomic:
+    # - Loads the record into memory, modifies the attribute
+    # - Requires .save to persist changes
+    # - .save updates all columns, not just times_guessed
+    # - Triggers validations and callbacks (for the entire model)
     # self.times_guessed += 1
     # self.save
 
-    # Slower option:
-    # update works like .save, but only updates the times_guessed field and immediately persists the change
-    # update still triggers validations and callbacks for the whole model
+    # Slower & not atomic:
+    # - Loads the record into memory, modifies the attribute, then calls .save!
+    # - Only updates times_guessed column, not all columns
+    # - Triggers validations and callbacks (but only for times_guessed)
+    # update(times_guessed: times_guessed + 1)
 
-    # update(:times_guessed, times_guessed + 1)
+    # Slower & not atomic:
+    # - Loads the record into memory, modifies the attribute, then calls .save!
+    # - Only updates times_guessed column, not all columns
+    # - Triggers callbacks and validations (but only for times_guessed)
+    # increment!(:times_guessed)
 
-    # Fastest option:
-    # update_column only updates the times_guessed field and immediately persists the change
-    # update_column skips validations and callbacks altogether
+    # Faster & not atomic:
+    # - Direct SQL update, bypasses ActiveRecord validations and callbacks
+    # - Still not atomic so doesn't prevent race conditions
+    # update_column(:times_guessed, times_guessed + 1)
 
-    update_column(:times_guessed, times_guessed + 1)
+    # Fastest & atomic:
+    # - Direct SQL update, bypassing ActiveRecord entirely
+    # - Fully atomic, so no race conditions
+    # - No callbacks or validations triggered
+    # Post.update_counters(id, times_guessed: 1)
+    # or
+    Post.increment_counter(:times_guessed, id)
   end
 end
