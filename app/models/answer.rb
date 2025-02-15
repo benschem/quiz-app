@@ -18,7 +18,7 @@ class Answer < ApplicationRecord
     guesses.exists?(user: user)
   end
 
-  def increment_times_guessed
+  def increment_times_guessed!
     # We still need a times_guessed column because our users table is based on sessions, not real users,
     # meaning we'll probably clean out old "users" regularly, so we can't rely on a calculation for this
 
