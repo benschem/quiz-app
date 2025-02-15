@@ -3,9 +3,15 @@ class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :guesses, through: :answers, dependent: :destroy
 
+  scope :ordered, -> { order(:number) }
+
   validates :text, presence: true
   validates :number, presence: true
   validate :must_have_exactly_one_correct_answer, on: :update # allows creating an answer after a question
+
+  def guessed_by?(user)
+    guesses.exists?(user: user)
+  end
 
   private
 
