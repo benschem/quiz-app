@@ -1,8 +1,8 @@
-require 'rails_helper'
+
 
 RSpec.describe "Quizzes", type: :request do
-  describe "GET /index" do
-    it "returns http success" do
+  describe "GET /quizzes" do
+    it "loads a list of quizzes" do
       # create_list(:quiz, 3)
       get quizzes_path
       expect(response).to have_http_status(:success)
@@ -10,8 +10,8 @@ RSpec.describe "Quizzes", type: :request do
     end
   end
 
-  describe "GET /show" do
-    it "returns http success" do
+  describe "GET /quizzes/:id" do
+    it "loads a specific quiz" do
       quiz = create(:quiz)
       get quiz_path(quiz)
       expect(response).to have_http_status(:success)

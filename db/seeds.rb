@@ -31,21 +31,21 @@ end
 winter_sports_quiz.questions.each do |question|
   4.times do
     incorrect_answer = Answer.create(
-      text: Faker::Sport.summer_olympics_sport,
+      text: Faker::Sport.unique.summer_olympics_sport,
       question_id: question.id,
       correct: false
     )
   end
 
   correct_answer = question.answers.sample
-  correct_answer.text = Faker::Sport.winter_olympics_sport
+  correct_answer.text = Faker::Sport.unique.winter_olympics_sport
   correct_answer.correct = true
   correct_answer.save
 end
 
 
-puts "Creating a quiz about Community vs New Girl..."
-tv_show_quiz = Quiz.create(title: "Community vs New Girl")
+puts "Creating a TV show quiz"
+tv_show_quiz = Quiz.create(title: "Can you guess the Community quote?")
 
 10.times do |index|
   question = Question.create(
@@ -56,16 +56,29 @@ tv_show_quiz = Quiz.create(title: "Community vs New Girl")
 end
 
 tv_show_quiz.questions.each do |question|
-  4.times do
-    incorrect_answer = Answer.create(
-      text: Faker::TvShows::NewGirl.quote,
-      question_id: question.id,
-      correct: false
-    )
-  end
+  Answer.create(
+    text: Faker::TvShows::NewGirl.unique.quote,
+    question: question,
+    correct: false
+  )
+  Answer.create(
+    text: Faker::TvShows::BrooklynNineNine.unique.quote,
+    question: question,
+    correct: false
+  )
+  Answer.create(
+    text: Faker::TvShows::Friends.unique.quote,
+    question: question,
+    correct: false
+  )
+  Answer.create(
+    text: Faker::TvShows::MichaelScott.unique.quote,
+    question: question,
+    correct: false
+  )
 
   correct_answer = question.answers.sample
-  correct_answer.text = Faker::TvShows::Community.quotes
+  correct_answer.text = Faker::TvShows::Community.unique.quotes
   correct_answer.correct = true
   correct_answer.save
 end

@@ -1,2 +1,18 @@
-<h1>Quizzes#show</h1>
-<p>Find me in app/views/quizzes/show.html.erb</p>
+<h1><%= @quiz.title %></h1>
+
+<% if @quiz.finished_by?(current_user) %>
+
+  <p>You've already taken this quiz!</p>
+  <%= link_to "Back to quizzes", quizzes_path %>
+
+<% elsif @quiz.started_by?(current_user) && !@quiz.finished_by?(current_user) %>
+
+  <p>You haven't finished this quiz!</p>
+  <%= link_to "Continue quiz", quiz_question_path(@quiz, @quiz.next_question_for(current_user)) %>
+
+<% else %>
+
+  <p>Get ready to take the quiz!</p>
+  <%= link_to "Start quiz", quiz_question_path(@quiz, @quiz.questions.ordered.first) %>
+
+<% end %>
