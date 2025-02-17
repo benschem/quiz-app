@@ -18,6 +18,13 @@ class Answer < ApplicationRecord
     guesses.exists?(user: user)
   end
 
+  def times_guessed_as_percentage
+    total_guesses_for_question = question.answers.sum(:times_guessed)
+    return 0 if total_guesses_for_question.zero?
+
+    (times_guessed.to_f / total_guesses_for_question) * 100
+  end
+
   def increment_times_guessed!
     # We still need a times_guessed column here because we can't count how many guesses there are since
     # our users table is based on sessions, not real users, meaning we'll probably clean out old "users" regularly,
