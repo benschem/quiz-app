@@ -2,24 +2,7 @@ class Quiz < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :user_quizzes
   has_many :users, through: :user_quizzes
+  has_many :guesses, through: :questions
 
   validates :title, presence: true
-
-  def started_by?(user)
-    user.guesses.exists?
-  end
-
-  def finished_by?(user)
-    answered_question_ids = user.guesses.includes(:answer).pluck("answers.question_id")
-    unanswered_questions = questions.where.not(id: answered_question_ids)
-    unanswered_questions.none?
-  end
-
-  def next_question_for(user)
-    answered_question_ids = user.guesses.includes(:answer).pluck("answers.question_id")
-    unanswered_questions = questions.where.not(id: answered_question_ids)
-    return nil if unanswered_questions.none?
-
-    unanswered_questions.ordered.first
-  end
 end
