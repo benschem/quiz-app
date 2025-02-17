@@ -1,26 +1,24 @@
 class QuestionsController < ApplicationController
   before_action :set_quiz, only: :show
   before_action :set_question, only: :show
-  before_action :find_or_create_user_quiz, only: :show
+  before_action :set_user_quiz, only: :show
 
-  # GET /quizzes/:quiz_id/questions/:number
+  # GET /quizzes/:quiz_id/questions/:id
   def show
-    @next_question = @quiz.questions.ordered.find_by(number: @question.number + 1)
-    @previous_question = @quiz.questions.ordered.find_by(number: @question.number - 1)
   end
 
   private
 
   def set_quiz
-    @quiz = Quiz.find(params[:quiz_id])
+    @quiz = Quiz.includes(:questions).find(params[:quiz_id])
   end
 
   def set_question
-    @question = @quiz.questions.find_by(number: params[:number].to_i)
+    @question = @quiz.questions.find(params[:id])
   end
 
-  def find_or_create_user_quiz
-    UserQuiz.find_or_create_by(
+  def set_user_quiz
+    @user_quiz = UserQuiz.find_or_create_by(
       user: current_user,
       quiz: @quiz
     )

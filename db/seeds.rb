@@ -23,14 +23,14 @@ winter_sports_quiz = Quiz.create(title: "Winter Sports")
 10.times do |index|
   question = Question.create(
     text: "Which one is a winter sport?",
-    quiz_id: winter_sports_quiz.id,
+    quiz: winter_sports_quiz,
     number: index + 1
   )
 end
 
 winter_sports_quiz.questions.each do |question|
   4.times do
-    incorrect_answer = Answer.create(
+    Answer.create(
       text: Faker::Sport.unique.summer_olympics_sport,
       question_id: question.id,
       correct: false

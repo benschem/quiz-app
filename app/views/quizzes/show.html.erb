@@ -1,20 +1,26 @@
 <h1><%= @quiz.title %></h1>
+<% if @user_quiz.times_taken == 1 %>
+  <p>You've taken this quiz 1 time!</p>
+<% elsif @user_quiz.times_taken > 1 %>
+  <p>You've taken this quiz <%= @user_quiz.times_taken  %> times!</p>
+<% else %>
+  <p>You haven't taken this quiz yet!</p>
+<% end %>
 
-<% if @quiz.finished_by?(current_user) %>
+<% if @user_quiz.finished? %>
 
-  <p>You've already taken this quiz!</p>
   <p>Your high score is <%= @user_quiz.high_score %>/<%= @quiz.questions.count %></p>
-  <%= link_to "Take this quiz again", quizzes_path %>
-  <%= link_to "Back to quizzes", quizzes_path %>
+  <%= link_to 'Replay this quiz', replay_user_quiz_path(@user_quiz), data: { turbo_method: :patch } %>
+  <%= link_to "Back to all quizzes", quizzes_path %>
 
-<% elsif @quiz.started_by?(current_user) && !@quiz.finished_by?(current_user) %>
+<% elsif @user_quiz.started? && !@user_quiz.finished? %>
 
   <p>You haven't finished this quiz!</p>
-  <%= link_to "Continue quiz", quiz_question_path(@quiz, @quiz.next_question_for(current_user)) %>
+  <%= link_to "Continue quiz", start_quiz_path(@quiz) %>
 
 <% else %>
 
   <p>Get ready to take the quiz!</p>
-  <%= link_to "Start quiz", quiz_question_path(@quiz, @quiz.questions.ordered.first) %>
+  <%= link_to "Start quiz", start_quiz_path(@quiz) %>
 
 <% end %>
