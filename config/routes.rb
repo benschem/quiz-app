@@ -9,8 +9,19 @@ Rails.application.routes.draw do
   root "quizzes#index"
 
   resources :quizzes, only: [:index, :show] do
-    resources :questions, param: :number, only: [:show] do
+    member do
+      get :start
+      post :finish
+    end
+
+    resources :questions, only: [:show] do
       resources :guesses, only: [:create]
+    end
+  end
+
+  resources :user_quizzes, only: [] do
+    member do
+      patch :replay
     end
   end
 end
