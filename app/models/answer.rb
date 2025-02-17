@@ -18,7 +18,6 @@ class Answer < ApplicationRecord
     guesses.exists?(user: user)
   end
 
-<<<<<<< HEAD
   def times_guessed_as_percentage
     total_guesses_for_question = question.answers.sum(:times_guessed)
     return 0 if total_guesses_for_question.zero?
@@ -31,13 +30,6 @@ class Answer < ApplicationRecord
     # our users table is based on sessions, not real users, meaning we'll probably clean out old "users" regularly,
     # so we can't rely on a calculation for this
 
-=======
-  def increment_times_guessed!
-    # We still need a times_guessed column here because we can't count how many guesses there are since
-    # our users table is based on sessions, not real users, meaning we'll probably clean out old "users" regularly,
-    # so we can't rely on a calculation for this
-
->>>>>>> 98b582cf39b6a41e4eb6828c73e9beae9a48a1cb
     # This is essentially a "global" method and might be called a lot!
     # So we need to make sure it's efficient
     # There are a few different approaches:
