@@ -2,5 +2,5 @@ FactoryBot.define do
   factory :guess do
     association :user
     association :answer
-  end
+    association :user_quiz  end
 end

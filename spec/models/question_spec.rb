@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it { should belong_to(:quiz) }
   it { should have_many(:answers).dependent(:destroy) }
-  it { should have_many(:guesses).dependent(:destroy) }
+  it { should have_many(:guesses).through(:answers).dependent(:destroy) }
 
   context "when creating a question" do
     let(:question) { create(:question_with_answers) }
 
-    it "is invalid without text asking the question" do
+    it "is invalid without the text of the question" do
       question.text = nil
       expect(question).not_to be_valid
     end

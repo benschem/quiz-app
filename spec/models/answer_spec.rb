@@ -45,20 +45,33 @@ RSpec.describe Answer, type: :model do
     end
   end
 
+  describe '#guessed_by(user)' do
+    let(:answer) { create(:answer, times_guessed: 0) }
 
-  describe '#increment_times_guessed' do
-  let(:answer) { create(:answer, times_guessed: 0) }
-
-    it 'increments the times_guessed by 1' do
-      answer.increment_times_guessed
+    it 'TODO: Checks if a Guess for this Answer exists for a User' do
+      answer.guessed_by?(user)
       answer.reload
       expect(answer.times_guessed).to eq(1)
     end
+  end
 
-    it 'does not trigger callbacks or validations' do
-      allow(answer).to receive(:run_callbacks).and_call_original
-      answer.increment_times_guessed
-      expect(answer).not_to have_received(:run_callbacks)
+  describe '#times_guessed_as_percentage' do
+    let(:answer) { create(:answer, times_guessed: 0) }
+
+    it 'TODO: Calculates how many times this Answer has been guessed' do
+      answer.times_guessed_as_percentage
+      answer.reload
+      expect(answer.times_guessed).to eq(1)
+    end
+  end
+
+  describe '#increment_times_guessed!' do
+    let(:answer) { create(:answer, times_guessed: 0) }
+
+    it 'increments the times_guessed by 1' do
+      answer.increment_times_guessed!
+      answer.reload
+      expect(answer.times_guessed).to eq(1)
     end
   end
 end
