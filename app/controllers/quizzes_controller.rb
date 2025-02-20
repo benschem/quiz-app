@@ -1,7 +1,7 @@
 class QuizzesController < ApplicationController
   before_action :set_quiz, except: :index
   before_action :set_user_quiz, except: :index
-  before_action :set_next_question, only: :start
+  before_action :set_next_question, only: [:start, :finish]
 
   # GET /quizzes
   def index
@@ -27,7 +27,7 @@ class QuizzesController < ApplicationController
 
       redirect_to quiz_path(@quiz)
     else
-      redirect_to quiz_question_path(@quiz, @user_quiz.next_question)
+      redirect_to quiz_question_path(@quiz, @next_question)
     end
   end
 
@@ -46,7 +46,7 @@ class QuizzesController < ApplicationController
 
   def set_next_question
     if @user_quiz.started?
-      @next_question = @user_quiz.next_question
+      @next_question = @user_quiz.next_unanswered_question
     else
       @next_question = @quiz.questions.ordered.first
     end

@@ -32,18 +32,9 @@ class UserQuiz < ApplicationRecord
     unanswered_questions.count.zero?
   end
 
-  def next_question
+  def next_unanswered_question
     return nil if finished?
 
     unanswered_questions.order(:number).first
-  end
-
-  def previous_question
-    return nil unless started?
-
-    previous_question = answered_questions.order(:number).last
-    return nil if previous_question.number == 1
-
-    previous_question
   end
 end
