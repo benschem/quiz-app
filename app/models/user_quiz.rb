@@ -8,7 +8,7 @@ class UserQuiz < ApplicationRecord
   def answered_questions
     quiz.questions
         .joins(answers: :guesses)
-        .where(guesses: { user_id: user.id })
+        .where(guesses: { user: user })
         .distinct
   end
 
@@ -29,12 +29,10 @@ class UserQuiz < ApplicationRecord
   end
 
   def finished?
-    unanswered_questions.count.zero?
+    answered_questions.count == quiz.questions.count
   end
 
   def next_unanswered_question
-    return nil if finished?
-
-    unanswered_questions.order(:number).first
+    unanswered_questions.order(:number).first unless finished?
   end
 end
