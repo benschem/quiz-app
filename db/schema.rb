@@ -56,7 +56,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_17_031338) do
     t.bigint "quiz_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "high_score"
+    t.integer "high_score", default: 0
     t.integer "times_taken", default: 0
     t.index ["quiz_id"], name: "index_user_quizzes_on_quiz_id"
     t.index ["user_id"], name: "index_user_quizzes_on_user_id"
