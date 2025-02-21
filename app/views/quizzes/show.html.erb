@@ -3,8 +3,6 @@
   <p>You've taken this quiz 1 time!</p>
 <% elsif @user_quiz.times_taken > 1 %>
   <p>You've taken this quiz <%= @user_quiz.times_taken  %> times!</p>
-<% else %>
-  <p>You haven't taken this quiz yet!</p>
 <% end %>
 
 <% if @user_quiz.finished? %>

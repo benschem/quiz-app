@@ -5,7 +5,7 @@ RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:guesses).through(:answers).dependent(:destroy) }
 
-  context "when creating a question" do
+  context "creating a question" do
     let(:question) { create(:question_with_answers) }
 
     it "is invalid without the text of the question" do
@@ -37,4 +37,28 @@ RSpec.describe Question, type: :model do
     end
   end
 
+  describe 'instance methods' do
+    describe '#guessed_by(user)' do
+      context "when a Guess for this Answer exists for a User" do
+        let(:user) { create(:user) }
+        let(:question) { create(:question) }
+        let(:answer) { create(:correct_answer, question: question) }
+        let!(:guess) { create(:guess, answer: answer, user: user) }
+
+        it 'returns true' do
+          expect(question.guessed_by?(user)).to be(true)
+        end
+      end
+
+      context "when a Guess for this Answer does not exist for a User" do
+        let(:user) { create(:user) }
+        Guess.destroy_all
+        let(:question) { create(:question_with_answers) }
+
+        it 'returns false' do
+          expect(question.guessed_by?(user)).to be(false)
+        end
+      end
+    end
+  end
 end

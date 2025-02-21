@@ -13,6 +13,9 @@ RSpec.describe UserQuiz, type: :model do
     it "defaults high_score to 0" do
       expect(user_quiz.high_score).to eq(0)
     end
+
+    # TODO: Add initial_score or first_time_score as well as high_score
+    # Your score only counts for leaderboards etc the first time you take a quiz
   end
 
   describe "instance methods" do
@@ -31,7 +34,6 @@ RSpec.describe UserQuiz, type: :model do
     # Using let! ensures the guess is created before the test runs. Tests fail without this
     let!(:guess) { create(:guess, user: user, answer: answer1, user_quiz: user_quiz) }
 
-    # TODO: Some of these tests don't work but after testing with binding.break the methods definitely do work, so the problem is with the tests.
     describe "#answered_questions" do
       it "returns questions the user has answered" do
         expect(user_quiz.answered_questions).to contain_exactly(question1)
@@ -69,6 +71,7 @@ RSpec.describe UserQuiz, type: :model do
       end
     end
 
+    # This method fails because it calls #finished?
     describe "#next_unanswered_question" do
       it "returns the next unanswered question by order" do
         expect(user_quiz.next_unanswered_question).to eq(question2)
