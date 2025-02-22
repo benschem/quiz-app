@@ -77,7 +77,6 @@ RSpec.describe Answer, type: :model do
       end
     end
 
-    # TODO: This fails
     describe '#times_guessed_as_percentage' do
       let!(:question) { create(:question)}
       let!(:answer1) { create(:answer, question: question, times_guessed: 5) }
