@@ -13,7 +13,6 @@ Rails.application.routes.draw do
       get :start
       post :finish
     end
-
     resources :questions, only: [:show] do
       resources :guesses, only: [:create]
     end

@@ -1,5 +1,4 @@
 require 'rails_helper'
-# require 'debug'
 
 RSpec.describe 'Guesses', type: :request do
   describe 'POST /quizzes/:quiz_id/questions/:id/guesses' do
@@ -8,8 +7,9 @@ RSpec.describe 'Guesses', type: :request do
     it 'returns http redirect' do
       quiz = create(:quiz)
       question = create(:question_with_answers, quiz: quiz)
-      # binding.break
-      post quiz_question_guesses_path(quiz, question)
+      answer = question.answers.first  # Assuming answers exist
+
+      post quiz_question_guesses_path(quiz, question), params: { answer_id: answer.id }
       expect(response).to have_http_status(:redirect)
     end
   end

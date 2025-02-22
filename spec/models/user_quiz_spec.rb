@@ -32,53 +32,55 @@ RSpec.describe UserQuiz, type: :model do
     let!(:answer4) { create(:incorrect_answer, question: question2) }
 
     # Using let! ensures the guess is created before the test runs. Tests fail without this
-    let!(:guess) { create(:guess, user: user, answer: answer1, user_quiz: user_quiz) }
 
     describe "#answered_questions" do
-      it "returns questions the user has answered" do
+    it "returns questions the user has answered" do
+        create(:guess, user: user, answer: answer1, user_quiz: user_quiz)
         expect(user_quiz.answered_questions).to contain_exactly(question1)
       end
     end
 
     describe "#unanswered_questions" do
       it "returns questions the user has not answered" do
-        expect(user_quiz.unanswered_questions).to contain_exactly(question2)
+        expect(user_quiz.unanswered_questions).to contain_exactly(question1, question2)
       end
     end
 
     describe "#correct_guesses_count" do
     it "returns the count of correctly answered questions" do
+        create(:guess, user: user, answer: answer1, user_quiz: user_quiz)
         expect(user_quiz.correct_guesses_count).to eq(1)
       end
     end
 
     describe "#started?" do
       it "returns true if the user has answered at least one question" do
+        create(:guess, user: user, answer: answer1, user_quiz: user_quiz)
         expect(user_quiz.started?).to be true
       end
     end
 
-    # TODO: this method definietly works but the test is failing, causing the next_unanswered_question test to fail too
-    # It's something to do with Rspec and how it loads things.
     describe "#finished?" do
       it "returns false if there are unanswered questions" do
         expect(user_quiz.finished?).to be false
       end
 
       it "returns true if all questions are answered" do
-        create(:guess, user: user, answer: answer2, user_quiz: user_quiz)
+        create(:guess, user: user, answer: answer1, user_quiz: user_quiz)
+        create(:guess, user: user, answer: answer3, user_quiz: user_quiz)
         expect(user_quiz.finished?).to be true
       end
     end
 
-    # This method fails because it calls #finished?
     describe "#next_unanswered_question" do
       it "returns the next unanswered question by order" do
-        expect(user_quiz.next_unanswered_question).to eq(question2)
+        expect(user_quiz.next_unanswered_question).to eq(question1)
       end
 
-      it "returns nil if all questions are answered" do
-        create(:guess, user: user, answer: answer2)
+    it "returns nil if all questions are answered" do
+        create(:guess, user: user, answer: answer1, user_quiz: user_quiz)
+        create(:guess, user: user, answer: answer3, user_quiz: user_quiz)
+        user_quiz.reload
         expect(user_quiz.next_unanswered_question).to be_nil
       end
     end
