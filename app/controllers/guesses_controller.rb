@@ -7,7 +7,7 @@ class GuessesController < ApplicationController
   # POST /quizzes/:quiz_id/questions/:question_number/guesses
   def create
     Guess.find_or_create_by(user: current_user, answer: @answer, user_quiz: @user_quiz)
-    @answer.increment_times_guessed! unless @user_quiz.times_taken > 1
+    @answer.increment_times_guessed! unless user_has_taken_quiz_before
 
     if @answer.correct?
       flash[:notice] = "Correct!"
@@ -34,5 +34,9 @@ class GuessesController < ApplicationController
 
   def set_user_quiz
     @user_quiz = UserQuiz.find_or_create_by(user: current_user, quiz: @quiz)
+  end
+
+  def user_has_taken_quiz_before
+    @user_quiz.times_taken > 0
   end
 end

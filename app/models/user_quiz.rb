@@ -33,6 +33,6 @@ class UserQuiz < ApplicationRecord
   end
 
   def next_unanswered_question
-    unanswered_questions.order(:number).first unless unanswered_questions.empty?
+    unanswered_questions.order(:number).first unless finished?
   end
 end

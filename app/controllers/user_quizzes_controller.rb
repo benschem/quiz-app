@@ -18,8 +18,6 @@ class UserQuizzesController < ApplicationController
   end
 
   def delete_guesses_from_last_play
-    # If you ever add any callbacks, change this to destroy_all
-    # .delete_all skips callbacks
     @user_quiz.guesses.destroy_all
   end
 end
